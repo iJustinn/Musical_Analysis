@@ -1,26 +1,27 @@
-#### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Get Kanye West's artist ID
+kanye <- search_spotify("Kanye West", type = "artist")
+kanye_id <- kanye$id[1]
 
+# Get Kanye West's albums
+kanye_albums <- get_artist_albums(kanye_id, include_groups = "album", limit = 50)
 
-#### Workspace setup ####
-library(opendatatoronto)
-library(tidyverse)
-# [...UPDATE THIS...]
+# Get tracks from all Kanye West albums
+kanye_tracks <- map_df(kanye_albums$id, get_album_tracks)
 
-#### Download data ####
-# [...ADD CODE HERE TO DOWNLOAD...]
+# Split the track IDs into chunks of 100 or less
+track_id_chunks <- split(kanye_tracks$id, ceiling(seq_along(kanye_tracks$id) / 100))
 
+# Retrieve audio features for each chunk of track IDs
+kanye_features_list <- lapply(track_id_chunks, function(chunk) {
+  get_track_audio_features(chunk)
+})
 
+# Combine all the chunks into a single dataframe
+kanye_features <- bind_rows(kanye_features_list)
 
-#### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
+# Join the track data with the audio features
+kanye_data <- kanye_tracks %>%
+  inner_join(kanye_features, by = "id")
 
-         
+# Save the Kanye West data as an RDS file
+saveRDS(kanye_data, "data/raw_data/kanye_data.rds")
