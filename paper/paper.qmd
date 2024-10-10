@@ -1,13 +1,15 @@
 ---
-title: ""
-subtitle: ""
+title: "From Rock to Rhythm"
+subtitle: "A Quantitative Analysis of Linkin Park’s Musical Transition"
 author: 
   - Ziheng Zhong
 thanks: "Code and data are available at: https://github.com/iJustinn/Musical_Analysis.git"
 date: today
 date-format: long
-abstract: ""
+abstract: "This paper analyzes the evolution of Linkin Park’s music by examining key audio features such as acousticness, danceability, and energy using data from the Spotify API. The study focuses on the band’s most popular albums, highlighting their shift from acoustic-influenced rock to more electronically produced and rhythmically accessible tracks over time. Despite these changes, Linkin Park consistently maintained high energy in their music. The results provide insights into the band’s adaptability and their ability to evolve while retaining core elements of their signature sound."
 format: pdf
+toc: true
+toc-depth: 3
 number-sections: true
 bibliography: references.bib
 ---
@@ -17,204 +19,170 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+# Library Setup
+library(here)
+library(readr)
 library(dplyr)
 library(usethis)
 library(magrittr)
 library(spotifyr)
 library(tidyverse)
 library(lubridate)
+library(kableExtra)
+
+# Load the data
+raw_data <- readRDS(here("data", "raw_data", "linkin_park_data.rds"))
+chart_1_data <- readRDS(here("data", "analysis_data", "clean_data_1.rds"))
 ```
+
 
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+Linkin Park is a globally renowned band known for its innovative fusion of rock, electronic, and alternative music. Since their debut album `Hybrid Theory` in 2000, the band has consistently evolved its sound, blending genres and experimenting with new styles. This paper seeks to analyze the sonic evolution of Linkin Park’s music through key audio features such as acousticness, danceability, and energy, using data sourced from the Spotify API. By examining these attributes across their discography, the study aims to uncover trends in their musical style and provide insights into how the band has adapted to changes in the music industry over time.
 
-The remainder of this paper is structured as follows. @sec-data....
+Focusing on their most popular albums, including `Hybrid Theory`, `Meteora`, and `One More Light`, this paper explores how Linkin Park shifted from the acoustic-influenced, high-energy rock tracks of their early years to more rhythmically accessible and electronically produced music in later albums. Through this analysis, the paper not only captures the band’s stylistic transitions but also highlights how they maintained core elements that have defined their music. By combining quantitative audio data with musical trends, this research offers a comprehensive view of Linkin Park’s evolving sound over two decades.
+
+The structure of this paper is organized as follows: @sec-data presents the data sources, methodologies, and the visualization of the results. The findings are then discussed in @sec-dis, and additional detailed information is provided in the appendix at @sec-app.
 
 
 
 # Data {#sec-data}
+This project is motivated and guided by Rohan Alexander and his book [@citeTbook]. Data used in this paper was downloaded, cleaned and analyzed with the programming language R [@citeR]. Also with the support of additional packages in R: `dplyr` [@citeDplyr], `usethis` [@citeUsethis], `magrittr` [@citeMagrittr], `spotifyr` [@citeSpotifyr], `tidyverse` [@citeTidyverse], `lubridate` [@citeLubridate], `here` [@citeHere] and `readr` [@citeReadr].
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+## Source
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+In this paper, data regarding the band Linkin Park was fetched from the Spotify API [@citeSpotify]. The Spotify API provides comprehensive music data, including track details, album information, artist popularity metrics, and more. By querying this API, I was able to fetch key information about Linkin Park, such as track popularity, album releases, and other metadata associated with their discography. The API's ability to deliver real-time data ensures that the information used in this analysis is current and reflects the band's ongoing listener engagement and global presence.
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
+Method of how data was processed can be found at @sec-app.
 
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
+## Results
 
 ```{r}
 #| echo: false
 #| eval: true
+#| label: fig-energy
+#| tbl-cap: ""
 #| warning: false
 #| message: false
 
-library(rstanarm)
+chart_1_data %>%
+  ggplot(aes(x = album_release_date, y = energy, color = album_name)) +
+  geom_line(stat = "summary", fun = "mean", size = 1.2) +
+  geom_point(alpha = 0.5) +
+  theme_minimal() +
+  labs(
+    title = "Energy of Linkin Park Songs Over Time",
+    x = "Album Release Date",
+    y = "Energy",
+    color = "Album"
+  )
 
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
 ```
+
+@fig-energy illustrates the acousticness of Linkin Park’s songs from their various albums over time. Acousticness, which measures how acoustic a track is, varies significantly across the band’s discography. Earlier albums, particularly around the early 2000s, have a broad range of acousticness, with some tracks reaching nearly 1.00 (high acoustic quality), while most remain closer to the 0.0 end of the scale. As time progresses, the acousticness generally decreases, indicating a preference for more electronically produced sounds in later albums. Notably, albums like "A Thousand Suns" and "The Hunting Party" show songs with relatively low acousticness values, emphasizing the band's shift toward more energetic and electronic compositions.
 
 ```{r}
 #| echo: false
 #| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| label: fig-dance
+#| tbl-cap: ""
 #| warning: false
+#| message: false
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
+chart_1_data %>%
+  ggplot(aes(x = album_release_date, y = danceability, color = album_name)) +
+  geom_line(stat = "summary", fun = "mean", size = 1.2) +
+  geom_point(alpha = 0.5) +
+  theme_minimal() +
+  labs(
+    title = "Danceability of Linkin Park Songs Over Time",
+    x = "Album Release Date",
+    y = "Danceability",
+    color = "Album"
+  )
+
 ```
 
+@fig-dance showcases the danceability scores of Linkin Park’s tracks, which represent how suitable the songs are for dancing based on tempo, rhythm stability, and beat strength. Across their early albums, danceability shows moderate variation, with several songs scoring between 0.4 and 0.6. As the timeline advances, there’s a noticeable increase in danceability, especially in albums like "One More Light," released post-2010, where multiple tracks score higher than previous ones. This indicates a transition in the band's music style, incorporating more rhythmically accessible and upbeat elements, perhaps in line with the trends of more modern music.
 
+```{r}
+#| echo: false
+#| eval: true
+#| label: fig-acoustic
+#| tbl-cap: ""
+#| warning: false
+#| message: false
 
+chart_1_data %>%
+  ggplot(aes(x = album_release_date, y = acousticness, color = album_name)) +
+  geom_line(stat = "summary", fun = "mean", size = 1.2) +
+  geom_point(alpha = 0.5) +
+  theme_minimal() +
+  labs(
+    title = "Acousticness of Linkin Park Songs Over Time",
+    x = "Album Release Date",
+    y = "Acousticness",
+    color = "Album"
+  )
 
-# Discussion
+```
 
-## First discussion point {#sec-first-point}
+@fig-acoustic visualizes the energy levels of Linkin Park songs, with energy representing the intensity and activity of the tracks. The data shows that the band maintained consistently high-energy tracks across their entire discography. Songs from early albums like "Hybrid Theory" and "Meteora" exhibit high energy levels, typically above 0.75, contributing to the aggressive, dynamic sound the band is known for. Even in their later works, such as "The Hunting Party" and "One More Light," energy levels remain elevated, reflecting Linkin Park's continuous emphasis on powerful, fast-paced music despite stylistic changes over the years.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+# Discussion {#sec-dis}
 
-## Second discussion point
+## The transition
 
-## Third discussion point
+The results from the acousticness, danceability, and energy charts highlight Linkin Park’s evolving sound over time. Early albums like Hybrid Theory and Meteora exhibit a wide range of acousticness, reflecting their experimental blend of rock and electronic elements. As the band's music matured, particularly from A Thousand Suns onward, their reliance on acoustic elements decreased, aligning more with electronic production styles. This shift is further supported by the increasing danceability in later albums like One More Light, suggesting the band's exploration into more rhythmically accessible and pop-influenced tracks. Throughout their career, Linkin Park maintained a high-energy sound, which remained a hallmark of their music, regardless of shifts in style. These results underscore the band’s ability to adapt and evolve while still retaining core elements that define their musical identity.
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
+One limitation of this analysis is its reliance on a few quantitative measures (acousticness, danceability, energy) to represent the complexity of Linkin Park's music. These metrics, while useful, do not fully capture other important aspects such as lyrical content, emotional intensity, and production intricacies that contribute to the overall character of their music. Additionally, the data only focuses on a subset of their albums, potentially overlooking valuable insights from live performances, collaborations, and lesser-known releases. Future projects should consider a more comprehensive dataset, including these factors, and apply more sophisticated methods like sentiment analysis or lyrical theme extraction to provide a deeper, multi-dimensional understanding of the band’s music evolution.
 
 \newpage
 
+
+
 \appendix
 
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+# Appendix {#sec-app}
 
 ```{r}
 #| echo: false
 #| eval: true
-#| message: false
+#| label: tbl-raw
+#| tbl-cap: ""
 #| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
+#| message: false
 
-plot(first_model, "trace")
+selected_data <- raw_data[, c("album_id", "danceability", "energy", "acousticness")]
 
-plot(first_model, "rhat")
+kbl(selected_data[1:6, ], caption = "Raw Linkin Park Spotify Data") %>%
+  kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
+
 ```
 
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-clean
+#| tbl-cap: ""
+#| warning: false
+#| message: false
 
+selected_data <- chart_1_data[, c("album_id", "danceability", "energy", "acousticness")]
+
+kbl(selected_data[1:6, ], caption = "Processed Linkin Park Spotify Data") %>%
+  kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+The data processing starts by narrowing the dataset to focus on the top 10 most popular albums by Linkin Park. A list called `popular_albums` is created, containing the names of these albums, including well-known releases like "Hybrid Theory," "Meteora (Bonus Edition)," and "Minutes to Midnight." This list helps to filter the dataset, ensuring that only the most significant and impactful albums are retained for analysis. These changes can be found by comparing @tbl-raw and @tbl-clean.
+
+Next, the code handles potential inconsistencies in the `album_release_date` field by ensuring that all dates are properly formatted. The `mutate()` function is used in combination with the `ymd()` function, which attempts to parse the date strings into a standard year-month-day format. To avoid disruptive errors caused by parsing issues, `suppressWarnings()` is used, which suppresses any warning messages if the date format is invalid or unparseable. This step is essential because incorrect or inconsistent date formats could skew analysis results.
+
+After ensuring that the `album_release_date` is correctly formatted, the data is further cleaned by filtering out any rows where the date parsing failed. This is done by checking for missing or `NA` values in the `album_release_date` field. Rows with `NA` values are excluded from the dataset using the `filter()` function. This final step guarantees that only the records with valid release dates are included, ensuring the reliability of subsequent analyses.
 
 \newpage
 
