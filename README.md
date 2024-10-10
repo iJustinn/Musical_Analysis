@@ -1,4 +1,4 @@
-# Musical_Analysis
+# Musical Analysis
 
 This paper utilized data fetched from the [Spotify API](https://developer.spotify.com/documentation/web-api/). This API provides comprehensive information on Linkin Park’s music, including track details, album metadata, and key audio features such as acousticness, energy, and danceability. As a vital source for analyzing musical trends and evolution, the Spotify API offers real-time access to extensive datasets essential for understanding the progression of the band's sound over time. The detailed analysis was conducted using `R` programming and is presented as a final research paper in `PDF` format.
 
