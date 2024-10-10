@@ -1,6 +1,6 @@
 ---
-title: "From Rock to Rhythm"
-subtitle: "A Quantitative Analysis of Linkin Park’s Musical Transition"
+title: "Linkin Park’s Musical Transition"
+subtitle: "A Quantitative Analysis"
 author: 
   - Ziheng Zhong
 thanks: "Code and data are available at: https://github.com/iJustinn/Musical_Analysis.git"
@@ -39,22 +39,22 @@ chart_1_data <- readRDS(here("data", "analysis_data", "clean_data_1.rds"))
 
 # Introduction
 
-Linkin Park is a globally renowned band known for its innovative fusion of rock, electronic, and alternative music. Since their debut album `Hybrid Theory` in 2000, the band has consistently evolved its sound, blending genres and experimenting with new styles. This paper seeks to analyze the sonic evolution of Linkin Park’s music through key audio features such as acousticness, danceability, and energy, using data sourced from the Spotify API. By examining these attributes across their discography, the study aims to uncover trends in their musical style and provide insights into how the band has adapted to changes in the music industry over time.
+Linkin Park is a globally renowned band known for its innovative fusion of rock, electronic, and alternative music. Since their debut album Hybrid Theory in 2000, the band has consistently evolved its sound, blending genres and experimenting with new styles. This paper seeks to analyze the sonic evolution of Linkin Park’s music through key audio features such as acousticness, danceability, and energy, using data sourced from the Spotify API. By examining these attributes across their discography, the study aims to uncover trends in their musical style and provide insights into how the band has adapted to changes in the music industry over time.
 
-Focusing on their most popular albums, including `Hybrid Theory`, `Meteora`, and `One More Light`, this paper explores how Linkin Park shifted from the acoustic-influenced, high-energy rock tracks of their early years to more rhythmically accessible and electronically produced music in later albums. Through this analysis, the paper not only captures the band’s stylistic transitions but also highlights how they maintained core elements that have defined their music. By combining quantitative audio data with musical trends, this research offers a comprehensive view of Linkin Park’s evolving sound over two decades.
+Focusing on their most popular albums, including Hybrid Theory, Meteora, and One More Light, this paper explores how Linkin Park shifted from the acoustic-influenced, high-energy rock tracks of their early years to more rhythmically accessible and electronically produced music in later albums. Through this analysis, the paper not only captures the band’s stylistic transitions but also highlights how they maintained core elements that have defined their music. By combining quantitative audio data with musical trends, this research offers a comprehensive view of Linkin Park’s evolving sound over two decades.
 
 The structure of this paper is organized as follows: @sec-data presents the data sources, methodologies, and the visualization of the results. The findings are then discussed in @sec-dis, and additional detailed information is provided in the appendix at @sec-app.
 
 
 
 # Data {#sec-data}
-This project is motivated and guided by Rohan Alexander and his book [@citeTbook]. Data used in this paper was downloaded, cleaned and analyzed with the programming language R [@citeR]. Also with the support of additional packages in R: `dplyr` [@citeDplyr], `usethis` [@citeUsethis], `magrittr` [@citeMagrittr], `spotifyr` [@citeSpotifyr], `tidyverse` [@citeTidyverse], `lubridate` [@citeLubridate], `here` [@citeHere] and `readr` [@citeReadr].
+This project is motivated and guided by Rohan Alexander and his book [@citeTbook]. Data used in this paper was downloaded, cleaned and analyzed with the programming language `R` [@citeR]. Also with the support of additional packages in R: `dplyr` [@citeDplyr], `usethis` [@citeUsethis], `magrittr` [@citeMagrittr], `spotifyr` [@citeSpotifyr], `tidyverse` [@citeTidyverse], `lubridate` [@citeLubridate], `here` [@citeHere] and `readr` [@citeReadr].
 
 ## Source
 
-In this paper, data regarding the band Linkin Park was fetched from the Spotify API [@citeSpotify]. The Spotify API provides comprehensive music data, including track details, album information, artist popularity metrics, and more. By querying this API, I was able to fetch key information about Linkin Park, such as track popularity, album releases, and other metadata associated with their discography. The API's ability to deliver real-time data ensures that the information used in this analysis is current and reflects the band's ongoing listener engagement and global presence.
+In this paper, data regarding the band Linkin Park was fetched from the Spotify API [@citeSpotify]. The Spotify API provides comprehensive music data, including track details, album information, artist popularity metrics, and more. By querying this API, we were able to fetch key information about Linkin Park, such as track popularity, album releases, and other metadata associated with their discography. The API's ability to deliver reliable data ensures that the information used in this analysis reflects the band's ongoing listener engagement and global presence.
 
-Method of how data was processed can be found at @sec-app.
+Method of how data was processed can be found in @sec-app.
 
 ## Results
 
