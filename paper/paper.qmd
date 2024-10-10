@@ -1,12 +1,13 @@
 ---
 title: "Linkin Park’s Musical Transition"
-subtitle: "A Quantitative Analysis"
+subtitle: "From Acoustic-Influenced Rock to Electronically Produced Tracks"
 author: 
   - Ziheng Zhong
+  - YingKe He
 thanks: "Code and data are available at: https://github.com/iJustinn/Musical_Analysis.git"
 date: today
 date-format: long
-abstract: "This paper analyzes the evolution of Linkin Park’s music by examining key audio features such as acousticness, danceability, and energy using data from the Spotify API. The study focuses on the band’s most popular albums, highlighting their shift from acoustic-influenced rock to more electronically produced and rhythmically accessible tracks over time. Despite these changes, Linkin Park consistently maintained high energy in their music. The results provide insights into the band’s adaptability and their ability to evolve while retaining core elements of their signature sound."
+abstract: "This paper analyzes the evolution of Linkin Park’s music by examining key audio features such as acousticness, danceability, and energy using data from the Spotify API. The study focuses on the band’s most popular albums, highlighting their shift from acoustic-influenced rock to more electronically produced and rhythmically accessible tracks over time. Despite these changes, Linkin Park consistently maintained high energy in their music. The results provide understandings into the band’s adaptability and their ability to evolve while retaining core elements of their signature sound."
 format: pdf
 toc: true
 toc-depth: 3
@@ -56,15 +57,29 @@ In this paper, data regarding the band Linkin Park was fetched from the Spotify 
 
 Method of how data was processed can be found in @sec-app.
 
+## Measurement
+Spotify doesn't release detailed methodologies on how acousticness, energy, and danceability are measured, the below are are potential approaches to how these features may be quantified:
+
+### Acousticness
+This feature likely evaluates the presence of non-electronic instrumentation or sounds within a track. With acoustic music relying on instruments like guitars or pianos. The measurement could be based on the absence of electronic frequencies or specific sound wave patterns commonly produced by acoustic instruments. 
+
+### Energy
+Energy measures the intensity and activity of a track. It could be calculated through several factors, such as tempo, perceived loudness, and how much the volume changes within the track. So tracks with fast tempos, prominent beats, and higher average volumes might be assigned higher energy values.
+
+### Danceability
+Danceability likely accounts for a track's rhythm stability, tempo, and overall beat strength. A song's suitability for dancing might be measured by its consistent and predictable beat, minimal rhythmic complexity, and tempo that falls within a range conducive to most types of dance music. This could be evaluate by analyzing the regularity and strength of beats or the prominence of rhythmic elements.
+
 ## Results
 
 ```{r}
 #| echo: false
 #| eval: true
 #| label: fig-energy
-#| tbl-cap: ""
+#| fig-cap: "Distribution of Energy of Linkin Park Songs Over Time (2002-2023)"
 #| warning: false
 #| message: false
+#| fig-height: 6
+#| fig-width: 7
 
 chart_1_data %>%
   ggplot(aes(x = album_release_date, y = energy, color = album_name)) +
@@ -72,11 +87,17 @@ chart_1_data %>%
   geom_point(alpha = 0.5) +
   theme_minimal() +
   labs(
-    title = "Energy of Linkin Park Songs Over Time",
     x = "Album Release Date",
     y = "Energy",
     color = "Album"
-  )
+  ) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    legend.key.width = unit(1.5, "cm"),
+    legend.box = "horizontal"
+  ) +
+  guides(color = guide_legend(nrow = 5, byrow = TRUE))
 
 ```
 
@@ -86,9 +107,11 @@ chart_1_data %>%
 #| echo: false
 #| eval: true
 #| label: fig-dance
-#| tbl-cap: ""
+#| fig-cap: "Distribtion of Danceability of Linkin Park Songs Over Time (2002-2023)"
 #| warning: false
 #| message: false
+#| fig-height: 6
+#| fig-width: 7
 
 chart_1_data %>%
   ggplot(aes(x = album_release_date, y = danceability, color = album_name)) +
@@ -96,11 +119,17 @@ chart_1_data %>%
   geom_point(alpha = 0.5) +
   theme_minimal() +
   labs(
-    title = "Danceability of Linkin Park Songs Over Time",
     x = "Album Release Date",
     y = "Danceability",
     color = "Album"
-  )
+  ) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    legend.key.width = unit(1.5, "cm"),
+    legend.box = "horizontal"
+  ) +
+  guides(color = guide_legend(nrow = 5, byrow = TRUE))
 
 ```
 
@@ -110,9 +139,11 @@ chart_1_data %>%
 #| echo: false
 #| eval: true
 #| label: fig-acoustic
-#| tbl-cap: ""
+#| fig-cap: "Distribtion of Acousticness of Linkin Park Songs Over Time (2002-2023)"
 #| warning: false
 #| message: false
+#| fig-height: 6
+#| fig-width: 7
 
 chart_1_data %>%
   ggplot(aes(x = album_release_date, y = acousticness, color = album_name)) +
@@ -120,11 +151,17 @@ chart_1_data %>%
   geom_point(alpha = 0.5) +
   theme_minimal() +
   labs(
-    title = "Acousticness of Linkin Park Songs Over Time",
     x = "Album Release Date",
     y = "Acousticness",
     color = "Album"
-  )
+  ) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    legend.key.width = unit(1.5, "cm"),
+    legend.box = "horizontal"
+  ) +
+  guides(color = guide_legend(nrow = 5, byrow = TRUE))
 
 ```
 
@@ -157,6 +194,7 @@ One limitation of this analysis is its reliance on a few quantitative measures (
 #| message: false
 
 selected_raw_data <- raw_data[, c("album_id", "danceability", "energy", "acousticness")]
+selected_raw_data[, 2:4] <- round(selected_raw_data[, 2:4], 2)
 
 kbl(selected_raw_data[1:6, ]) %>%
   kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
@@ -172,13 +210,14 @@ kbl(selected_raw_data[1:6, ]) %>%
 #| message: false
 
 selected_chart_data <- chart_1_data[, c("album_id", "danceability", "energy", "acousticness")]
+selected_chart_data[, 2:4] <- round(selected_chart_data[, 2:4], 2)
 
 kbl(selected_chart_data[1:6, ]) %>%
   kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
-The data processing starts by narrowing the dataset to focus on the top 10 most popular albums by Linkin Park. A list called `popular_albums` is created, containing the names of these albums, including well-known releases like "Hybrid Theory," "Meteora (Bonus Edition)," and "Minutes to Midnight." This list helps to filter the dataset, ensuring that only the most significant and impactful albums are retained for analysis. These changes can be found by comparing @tbl-raw and @tbl-clean.
+The data processing starts by narrowing the dataset to focus on the top 10 most popular albums by Linkin Park. A list called popular_albums is created, containing the names of these albums, including well-known releases like "Hybrid Theory," "Meteora (Bonus Edition)," and "Minutes to Midnight." This list helps to filter the dataset, ensuring that only the most significant and impactful albums are retained for analysis. These changes can be found by comparing @tbl-raw and @tbl-clean.
 
 Next, the code handles potential inconsistencies in the `album_release_date` field by ensuring that all dates are properly formatted. The `mutate()` function is used in combination with the `ymd()` function, which attempts to parse the date strings into a standard year-month-day format. To avoid disruptive errors caused by parsing issues, `suppressWarnings()` is used, which suppresses any warning messages if the date format is invalid or unparseable. This step is essential because incorrect or inconsistent date formats could skew analysis results.
 
