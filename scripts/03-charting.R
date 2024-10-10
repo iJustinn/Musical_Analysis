@@ -1,3 +1,10 @@
+#### Workspace Setup ####
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+
+
+
 #### Load Data ####
 chart_1_data <- readRDS("data/analysis_data/clean_data_1.rds")
 

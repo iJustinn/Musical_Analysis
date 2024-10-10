@@ -1,13 +1,12 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: ""
+subtitle: ""
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Ziheng Zhong
+thanks: "Code and data are available at: https://github.com/iJustinn/Musical_Analysis.git"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: ""
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -18,8 +17,12 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+library(dplyr)
+library(usethis)
+library(magrittr)
+library(spotifyr)
 library(tidyverse)
-library(palmerpenguins)
+library(lubridate)
 ```
 
 

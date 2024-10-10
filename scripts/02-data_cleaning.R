@@ -1,3 +1,11 @@
+#### Workspace Setup ####
+library(dplyr)
+library(usethis)
+library(tidyverse)
+library(lubridate)
+
+
+
 #### Load Data ####
 linkin_park_data <- readRDS("data/raw_data/linkin_park_data.rds")
 
