@@ -49,7 +49,7 @@ The structure of this paper is organized as follows: @sec-data presents the data
 
 
 # Data {#sec-data}
-This project is motivated and guided by Rohan Alexander and his book [@citeTbook]. Data used in this paper was downloaded, cleaned and analyzed with the programming language `R` [@citeR]. Also with the support of additional packages in R: `dplyr` [@citeDplyr], `usethis` [@citeUsethis], `magrittr` [@citeMagrittr], `spotifyr` [@citeSpotifyr], `tidyverse` [@citeTidyverse], `lubridate` [@citeLubridate], `here` [@citeHere] and `readr` [@citeReadr].
+This project is motivated and guided by Rohan Alexander and his book [@citeTbook]. Data used in this paper were downloaded, cleaned and analyzed with the programming language `R` [@citeR]. Also with the support of additional packages in R: `dplyr` [@citeDplyr], `usethis` [@citeUsethis], `magrittr` [@citeMagrittr], `spotifyr` [@citeSpotifyr], `tidyverse` [@citeTidyverse], `lubridate` [@citeLubridate], `here` [@citeHere] and `readr` [@citeReadr].
 
 ## Source
 
@@ -58,7 +58,7 @@ In this paper, data regarding the band Linkin Park was fetched from the Spotify 
 Method of how data was processed can be found in @sec-app.
 
 ## Measurement
-Spotify doesn't release detailed methodologies on how acousticness, energy, and danceability are measured, the below are are potential approaches to how these features may be quantified:
+Spotify does not release detailed methodologies on how acousticness, energy, and danceability are measured, the below are potential approaches to how these features may be quantified:
 
 ### Acousticness
 This feature likely evaluates the presence of non-electronic instrumentation or sounds within a track. With acoustic music relying on instruments like guitars or pianos. The measurement could be based on the absence of electronic frequencies or specific sound wave patterns commonly produced by acoustic instruments. 
@@ -67,7 +67,7 @@ This feature likely evaluates the presence of non-electronic instrumentation or 
 Energy measures the intensity and activity of a track. It could be calculated through several factors, such as tempo, perceived loudness, and how much the volume changes within the track. So tracks with fast tempos, prominent beats, and higher average volumes might be assigned higher energy values.
 
 ### Danceability
-Danceability likely accounts for a track's rhythm stability, tempo, and overall beat strength. A song's suitability for dancing might be measured by its consistent and predictable beat, minimal rhythmic complexity, and tempo that falls within a range conducive to most types of dance music. This could be evaluate by analyzing the regularity and strength of beats or the prominence of rhythmic elements.
+Danceability likely accounts for a track's rhythm stability, tempo, and overall beat strength. A song's suitability for dancing might be measured by its consistent and predictable beat, minimal rhythmic complexity, and tempo that falls within a range conducive to most types of dance music. This could be evaluated by analyzing the regularity and strength of beats or the prominence of rhythmic elements.
 
 ## Results
 
@@ -101,13 +101,13 @@ chart_1_data %>%
 
 ```
 
-@fig-energy illustrates the acousticness of Linkin Park’s songs from their various albums over time. Acousticness, which measures how acoustic a track is, varies significantly across the band’s discography. Earlier albums, particularly around the early 2000s, have a broad range of acousticness, with some tracks reaching nearly 1.00 (high acoustic quality), while most remain closer to the 0.0 end of the scale. As time progresses, the acousticness generally decreases, indicating a preference for more electronically produced sounds in later albums. Notably, albums like "A Thousand Suns" and "The Hunting Party" show songs with relatively low acousticness values, emphasizing the band's shift toward more energetic and electronic compositions.
+@fig-energy visualizes the energy levels of Linkin Park songs, with energy representing the intensity and activity of the tracks. The data shows that the band maintained consistently high-energy tracks across their entire discography. Songs from early albums like "Hybrid Theory" and "Meteora" exhibit high energy levels, typically above 0.75, contributing to the aggressive, dynamic sound the band is known for. Even in their later works, such as "The Hunting Party" and "One More Light," energy levels remain elevated, reflecting Linkin Park's continuous emphasis on powerful, fast-paced music despite stylistic changes over the years.
 
 ```{r}
 #| echo: false
 #| eval: true
 #| label: fig-dance
-#| fig-cap: "Distribtion of Danceability of Linkin Park Songs Over Time (2002-2023)"
+#| fig-cap: "Distribution of Danceability of Linkin Park Songs Over Time (2002-2023)"
 #| warning: false
 #| message: false
 #| fig-height: 6
@@ -139,7 +139,7 @@ chart_1_data %>%
 #| echo: false
 #| eval: true
 #| label: fig-acoustic
-#| fig-cap: "Distribtion of Acousticness of Linkin Park Songs Over Time (2002-2023)"
+#| fig-cap: "Distribution of Acousticness of Linkin Park Songs Over Time (2002-2023)"
 #| warning: false
 #| message: false
 #| fig-height: 6
@@ -165,7 +165,7 @@ chart_1_data %>%
 
 ```
 
-@fig-acoustic visualizes the energy levels of Linkin Park songs, with energy representing the intensity and activity of the tracks. The data shows that the band maintained consistently high-energy tracks across their entire discography. Songs from early albums like "Hybrid Theory" and "Meteora" exhibit high energy levels, typically above 0.75, contributing to the aggressive, dynamic sound the band is known for. Even in their later works, such as "The Hunting Party" and "One More Light," energy levels remain elevated, reflecting Linkin Park's continuous emphasis on powerful, fast-paced music despite stylistic changes over the years.
+@fig-acoustic illustrates the acousticness of Linkin Park’s songs from their various albums over time. Acousticness, which measures how acoustic a track is, varies significantly across the band’s discography. Earlier albums, particularly around the early 2000s, have a broad range of acousticness, with some tracks reaching nearly 1.00 (high acoustic quality), while most remain closer to the 0.0 end of the scale. As time progresses, the acousticness generally decreases, indicating a preference for more electronically produced sounds in later albums. Notably, albums like "A Thousand Suns" and "The Hunting Party" show songs with relatively low acousticness values, emphasizing the band's shift toward more energetic and electronic compositions.
 
 # Discussion {#sec-dis}
 
