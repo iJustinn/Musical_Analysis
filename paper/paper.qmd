@@ -152,13 +152,13 @@ One limitation of this analysis is its reliance on a few quantitative measures (
 #| echo: false
 #| eval: true
 #| label: tbl-raw
-#| tbl-cap: ""
+#| tbl-cap: "Raw Linkin Park Spotify Data"
 #| warning: false
 #| message: false
 
-selected_data <- raw_data[, c("album_id", "danceability", "energy", "acousticness")]
+selected_raw_data <- raw_data[, c("album_id", "danceability", "energy", "acousticness")]
 
-kbl(selected_data[1:6, ], caption = "Raw Linkin Park Spotify Data") %>%
+kbl(selected_raw_data[1:6, ]) %>%
   kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
@@ -167,13 +167,13 @@ kbl(selected_data[1:6, ], caption = "Raw Linkin Park Spotify Data") %>%
 #| echo: false
 #| eval: true
 #| label: tbl-clean
-#| tbl-cap: ""
+#| tbl-cap: "Processed Linkin Park Spotify Data"
 #| warning: false
 #| message: false
 
-selected_data <- chart_1_data[, c("album_id", "danceability", "energy", "acousticness")]
+selected_chart_data <- chart_1_data[, c("album_id", "danceability", "energy", "acousticness")]
 
-kbl(selected_data[1:6, ], caption = "Processed Linkin Park Spotify Data") %>%
+kbl(selected_chart_data[1:6, ]) %>%
   kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
